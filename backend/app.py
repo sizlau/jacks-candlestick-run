@@ -1,8 +1,10 @@
 import sqlite3
+from flask_cors import CORS
 
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+CORS(app)
 
 def init_db():
     conn = sqlite3.connect('leaderboard.db')

@@ -75,6 +75,13 @@ if (
 gameLoop();
 
 restartBtn.addEventListener('click', function() {
+  fetch('http://127.0.0.1:5000/scores', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name: playerNameInput.value, score: score})
+  })
   jack.y = groundY;
   jack.velocityY = 0;
   candlestick.x = 800;
