@@ -22,33 +22,52 @@ def init_db():
 
 init_db()
 
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    try: 
+        conn = sqlite3.connect('leaderboard.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT name, score FROM scores ORDER BY score DESC LIMIT 10')
+        rows = cursor.fetchall()
+        conn.close()
+
+        leaderboard = []
+        for row in rows:
+            leaderboard.append({'name': row[0], 'score': row[1]})
+
+        return jsonify(leaderboard)
+    except Exception as e:
+        return jsonify({'error': 'Database error occurred'}), 500
+
+
 @app.route('/scores', methods=['POST'])
 def submit_score():
     data = request.get_json()
+
+    if not data or 'name' not in data or 'score' not in data:
+        return jsonify({'error': 'Missing name or score'}), 400
+
     name = data['name']
     score = data['score']
 
-    conn = sqlite3.connect('leaderboard.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO scores (name, score) VALUES (?, ?)', (name, score))
-    conn.commit()
-    conn.close()
+    if not isinstance(name, str) or len(name.strip()) == 0:
+        return jsonify({'error': 'Invalid name'}), 400
 
-    return jsonify({'message': 'Score Submitted Successfully'})
+    if len(name) > 20:
+        return jsonify({'error': 'Name too long'}), 400
 
-@app.route('/leaderboard', methods=['GET'])
-def get_leaderboard():
-    conn = sqlite3.connect('leaderboard.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT name, score FROM scores ORDER BY score DESC LIMIT 10')
-    rows = cursor.fetchall()
-    conn.close()
+    if not isinstance(score, int):
+        return jsonify({'error': 'Score must be a number'}), 400
 
-    leaderboard = []
-    for row in rows:
-        leaderboard.append({'name': row[0], 'score': row[1]})
-
-    return jsonify(leaderboard)
+    try:
+        conn = sqlite3.connect('leaderboard.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO scores (name, score) VALUES (?, ?)', (name, score))
+        conn.commit()
+        conn.close()
+        return jsonify({'message': 'Score Submitted Successfully'})
+    except Exception as e:
+        return jsonify({'error': 'Database error occurred'}), 500
 
 @app.route('/')
 def home():

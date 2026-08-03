@@ -8,6 +8,8 @@ const scoreDisplay = document.getElementById('score');
 const gameOverScreen = document.getElementById('gameOverScreen');
 const playerNameInput = document.getElementById('playerName');
 const restartBtn = document.getElementById('restartBtn');
+const leaderboardList = document.getElementById('leaderboardList');
+
 let score = 0;
 
 const jack = {
@@ -29,10 +31,25 @@ const candlestick = {
 
 let gameOver = false;
 
+async function loadLeaderboard() {
+    const response = await fetch('http://127.0.0.1:5000/leaderboard');
+    const data = await response.json();
+
+    leaderboardList.innerHTML = '';
+
+    for (let i = 0; i < data.length; i++) {
+        const entry = data[i];
+        const li = document.createElement('li');
+        li.textContent = entry.name + ' - ' + entry.score;
+        leaderboardList.appendChild(li);
+    }
+}
+
 function gameLoop() {
     if (gameOver) {
         return;
     }
+
     jack.velocityY += gravity;
     jack.y += jack.velocityY;
 
@@ -73,15 +90,19 @@ if (
 }
 
 gameLoop();
+loadLeaderboard();
 
-restartBtn.addEventListener('click', function() {
-  fetch('http://127.0.0.1:5000/scores', {
+restartBtn.addEventListener('click', async function() {
+  await fetch('http://127.0.0.1:5000/scores', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({ name: playerNameInput.value, score: score})
-  })
+  });
+
+  loadLeaderboard();
+
   jack.y = groundY;
   jack.velocityY = 0;
   candlestick.x = 800;
