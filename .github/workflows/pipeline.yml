@@ -27,3 +27,9 @@ jobs:
         working-directory: backend
         run: |
           pytest
+
+      - name: Audit dependencies for vulnerabilities
+        working-directory: backend
+        run: |
+          pip install pip-audit
+          pip-audit
