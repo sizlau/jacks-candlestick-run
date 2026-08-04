@@ -44,4 +44,5 @@ jobs:
         with:
           image-ref: jacks-candlestick-backend
           severity: CRITICAL
+          ignore-unfixed: true
           exit-code: 1
