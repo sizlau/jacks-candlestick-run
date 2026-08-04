@@ -118,6 +118,9 @@ docker run -p 5000:5000 jacks-candlestick-backend
 - Building a CI/CD pipeline from scratch in GitHub Actions, including watching it fail on real issues and fixing them
 - Making and documenting a defensible security gating policy, rather than either ignoring findings or blocking on everything
 
+
+- This was my first ever project learning how to get all of these things working together as well as learning some new concepts in code. overall i really enjoyed this project and so much fun building it, getting stuck, debugging errors and fixing it was the best part. cant wait to keep making new projects and learning more and more!! **:)**
+
 ## Author
 
 **Jack Hancock**
