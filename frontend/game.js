@@ -38,7 +38,7 @@ const candlestick = {
 let gameOver = false;
 
 async function loadLeaderboard() {
-    const response = await fetch('http://127.0.0.1:5000/leaderboard');
+    const response = await fetch('https://jacks-candlestick-backend.onrender.com');
     const data = await response.json();
 
     leaderboardList.innerHTML = '';
