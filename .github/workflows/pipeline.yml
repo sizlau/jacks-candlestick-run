@@ -33,3 +33,15 @@ jobs:
         run: |
           pip install pip-audit
           pip-audit
+
+      - name: Build Docker image
+        working-directory: backend
+        run: | 
+          docker build -t jacks-candlestick-backend . 
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: jacks-candlestick-backend
+          severity: HIGH,CRITICAL
+          exit-code: 1
