@@ -36,8 +36,8 @@ jobs:
 
       - name: Build Docker image
         working-directory: backend
-        run: | 
-          docker build -t jacks-candlestick-backend . 
+        run: |
+          docker build -t jacks-candlestick-backend .
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
@@ -46,3 +46,21 @@ jobs:
           severity: CRITICAL
           ignore-unfixed: true
           exit-code: 1
+
+  deploy-frontend:
+    needs: test-and-scan
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload frontend as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
