@@ -4,7 +4,7 @@ A 2D browser runner game — Jack jumps over candlesticks, à la "Jack be nimble
 
 This project exists to demonstrate practical DevSecOps skills: not just building an app, but hardening it, testing it, containerizing it, scanning it for vulnerabilities, and automating all of that in a real pipeline.
 
-**[🔗 Live Demo](#)** *(add link if deployed)*
+**[🔗 Live Demo](#)** *(https://sizlau.github.io/jacks-candlestick-run/)*
 
 ![status](https://img.shields.io/badge/status-active-39e639)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
