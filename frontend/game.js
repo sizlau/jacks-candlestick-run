@@ -10,6 +10,12 @@ const playerNameInput = document.getElementById('playerName');
 const restartBtn = document.getElementById('restartBtn');
 const leaderboardList = document.getElementById('leaderboardList');
 
+const jackImage = new Image();
+jackImage.src = 'images/jack.svg';
+
+const candlestickImage = new Image();
+candlestickImage.src = 'images/candlestick.svg';
+
 let score = 0;
 
 const jack = {
@@ -45,6 +51,17 @@ async function loadLeaderboard() {
     }
 }
 
+function drawCloud(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 15, 0, Math.PI * 2);
+    ctx.arc(x + 18, y - 8, 18, 0, Math.PI * 2);
+    ctx.arc(x + 36, y, 15, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+}
+
+
+
 function gameLoop() {
     if (gameOver) {
         return;
@@ -59,14 +76,28 @@ function gameLoop() {
         jack.isJumping = false;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    skyGradient.addColorStop(0, '#4a90d9');
+    skyGradient.addColorStop(1, '#bcdffb');
+    ctx.fillStyle = skyGradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.beginPath();
+    ctx.arc(700, 50, 30, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffdb4b';
+    ctx.fill();
+
+    drawCloud(100, 60); 
+    drawCloud(400, 400);
+
+    ctx.fillStyle = '#3a2417';
+    ctx.fillRect(0, groundY + 60, canvas.width, canvas.height - (groundY + 60));
 
     score += 1;
     scoreDisplay.textContent = 'Score: ' + Math.floor(score / 10);
 
 
-    ctx.fillStyle = 'black';
-    ctx.fillRect(jack.x, jack.y, jack.width, jack.height);
+    ctx.drawImage(jackImage, jack.x, jack.y, jack.width, jack.height);
     
     candlestick.x -= candlestick.speed;
 
@@ -74,8 +105,7 @@ function gameLoop() {
         candlestick.x = 800;
     }
 
-    ctx.fillStyle = 'white';
-    ctx.fillRect(candlestick.x, candlestick.y, candlestick.width, candlestick.height);
+   ctx.drawImage(candlestickImage, candlestick.x, candlestick.y, candlestick.width, candlestick.height);
 
 if (
     jack.x < candlestick.x + candlestick.width &&
