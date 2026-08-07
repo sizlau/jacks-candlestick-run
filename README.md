@@ -1,4 +1,4 @@
-# 🏍️ Jack's Candlestick Run
+#  Jack's Candlestick Run
 
 A 2D browser runner game — Jack jumps over candlesticks, à la "Jack be nimble, Jack be quick" — built with a Flask + SQLite leaderboard API, containerized with Docker, and shipped through a CI/CD pipeline with automated testing and security scanning.
 
